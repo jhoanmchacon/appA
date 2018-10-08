@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.insumoskeij.appaksu.MainActivity"
     android:layout_marginTop="50dp"
-
     tools:showIn="@layout/app_bar_main"
     android:orientation="vertical"
     android:background="@drawable/side_nav_bar">
@@ -18,5 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null" />
+
+
 
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -13,6 +13,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+   <!-- <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        >
+        <ImageView
+            android:id="@+id/pub_1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/aksu_1"
+            android:layout_marginTop="70dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        >
+        <ImageView
+            android:id="@+id/pub_2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/aksu_2"
+            android:layout_marginTop="300dp"/>
+
+    </LinearLayout>-->
+
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -21,5 +47,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
+
 
 </android.support.v4.widget.DrawerLayout>

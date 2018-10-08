@@ -1,28 +1,50 @@
 package com.insumoskeij.appaksu.fragment;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.insumoskeij.appaksu.MainActivity;
 import com.insumoskeij.appaksu.R;
+import com.insumoskeij.appaksu.adapter.Adapter;
+import com.insumoskeij.appaksu.model.Catalogo;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FragmentListResultado.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FragmentListResultado#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class FragmentListResultado extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    ProgressDialog pDialog;
+    List<Catalogo> listData = new ArrayList<Catalogo>();
+    Adapter adapter;
+    SwipeRefreshLayout swipe;
+    ListView list_view;
+
+    private static final String TAG = android.support.v4.app.Fragment.class.getSimpleName();
+
+    public static final String TAG_MARCA = "d_marca";
+    public static final String TAG_MODELO = "d_modelo";
+    public static final String TAG_ANNO = "d_desde_hasta";
+    public static final String TAG_CODIGO = "d_codigo";
+    public static final String TAG_TIPO_PROD = "d_tipo_prod";
+    public static final String TAG_RUTA_IMG = "d_imagen";
+    public static final String TAG_RESULTS = "data";
+    public static final String TAG_MESSAGE = "d_tipo_prod";
+    public static final String TAG_VALUE = "value";
+
+    String tag_json_obj = "json_obj_req";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,6 +81,7 @@ public class FragmentListResultado extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
