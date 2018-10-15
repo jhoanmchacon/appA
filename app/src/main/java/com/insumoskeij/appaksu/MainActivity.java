@@ -311,11 +311,14 @@ public class MainActivity extends AppCompatActivity
         boolean fragmentSelecionado=false;
 
         if (id == R.id.nav_camera) {
-            miFragment = new FormBusquedaFragment();
-            fragmentSelecionado=true;
+            Intent i = new Intent(this, ItemListActivity.class);
+            startActivity(i);
+
+            /*miFragment = new FormBusquedaFragment();
+            fragmentSelecionado=true;*/
         } else if (id == R.id.nav_manage) {
-            /*Intent i = new Intent(this, PrefActivity.class);
-            startActivity(i);*/
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivity(i);
 
         } else if (id == R.id.Instagram) {
             Uri uri = Uri.parse("https://instagram.com/aksuglobal");

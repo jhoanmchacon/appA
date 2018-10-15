@@ -133,484 +133,484 @@ public class FormBusquedaFragment extends Fragment implements Response.Listener<
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View vista = inflater.inflate(fragment_form_busqueda, container, false);
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            View vista = inflater.inflate(fragment_form_busqueda, container, false);
 
-        catalogoList=new ArrayList<>();
-        /*****Cargar valor pais/idioma******/
+            catalogoList=new ArrayList<>();
+            /*****Cargar valor pais/idioma******/
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        idPais=preferences.getString("idPais","");
-        idIdioma=preferences.getString("idIdioma","");
-
-
-        /*****Combo Tipo Producto******/
-        spTipoProducto = vista.findViewById(R.id.spTipoProducto);
-        TprodList = new ArrayList<TipoProducto>();
-
-        spTipoProducto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                txtAgregarTprod = TprodList.get(i).getIdTipoProducto();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        new GetTproducto().execute();
-
-        /*****Combo Marca******/
-        spMarca = vista.findViewById(R.id.spMarca);
-        MarcaList = new ArrayList<Marca>();
-
-        spMarca.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                txtAgregarMarca = MarcaList.get(i).getId_marca();
-                ModeloList.clear();
-                MotorList.clear();
-                if (!txtAgregarMarca.isEmpty()){
-                new GetModelo().execute();}
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        new GetMarca().execute();
-
-        /****COMBO MODELO***/
-        spModelo = vista.findViewById(R.id.spModelo);
-        ModeloList = new ArrayList<Modelo>();
-
-        spModelo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                txtAgregarModelo=ModeloList.get(i).getId_modelo();
-                MotorList.clear();
-                if (!txtAgregarModelo.isEmpty()){
-                new GetMotor().execute();}
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            idPais=preferences.getString("idPais","");
+            idIdioma=preferences.getString("idIdioma","");
 
 
-        /****COMBO MOTOR***/
-        spMotor = vista.findViewById(R.id.spMotor);
-        MotorList = new ArrayList<Motor>();
+            /*****Combo Tipo Producto******/
+            spTipoProducto = vista.findViewById(R.id.spTipoProducto);
+            TprodList = new ArrayList<TipoProducto>();
 
-        spMotor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                txtAgregarMotor = MotorList.get(i).getId_motor();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        recyclerCatalogo =  vista.findViewById(R.id.idRecycler);
-        recyclerCatalogo.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerCatalogo.setHasFixedSize(true);
-
-
-        btnBuscar =  vista.findViewById(R.id.btnBuscar);
-        request= Volley.newRequestQueue(getContext());
-
-
-        btnBuscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                cargarWebService();
-            }
-        });
-
-        return vista;
-    }
-
- /**************CONSULTA DE PRODUCTOS****************/
-
- private void cargarWebService() {
-
-     progreso = new ProgressDialog(getContext());
-     progreso.setMessage("Consultando...");
-     progreso.show();
-
-     buscar=campoBusqueda.getText().toString();
-
-     //String url ="http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlBusqueda.php?&pais="+idPais+"&buscar="+campoBusqueda.getText().toString();
-     String url ="http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlBusqueda.php?opc="+idIdioma+"&pais="+idPais+"&keyword="+buscar+
-             "&tipoProducto="+ txtAgregarTprod+"&marca="+txtAgregarMarca+"&modelo="+txtAgregarModelo+"&motor="+txtAgregarMotor;
-     System.out.println("urlll "+url);
-     url=url.replace(" ","%20");
-
-     jsonObjectRequest= new JsonObjectRequest(Request.Method.GET,url,null,this,this);
-     request.add(jsonObjectRequest);
- }
-
-
-
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        progreso.hide();
-        Toast.makeText(getContext(),"error al consultar"+error.toString(),Toast.LENGTH_SHORT).show();
-        Log.i("ERROR",error.toString());
-
-    }
-
-    @Override
-    public void onResponse(JSONObject response) {
-        Catalogo catalogo=null;
-
-        JSONArray json= response.optJSONArray("data");
-        try {
-            for (int i =0;i<json.length();i++) {
-                catalogo= new Catalogo();
-                JSONObject jsonObject=null;
-                jsonObject = json.getJSONObject(i);
-
-                catalogo.setTxtMarca(jsonObject.optString("d_marca"));
-                catalogo.setTxtserie(jsonObject.optString("d_serie"));
-                catalogo.setTxtModelo(jsonObject.optString("d_modelo"));
-                catalogo.setTxtAnno(jsonObject.optString("d_desde_hasta"));
-                //System.out.println("xxxxx "+catalogo.getNombreVeh());
-                catalogo.setTxtCodigoProd(jsonObject.optString("d_codigo"));
-                // System.out.println(catalogo.getNombreFiltro());
-                catalogo.setTxtTipoProd(jsonObject.optString("d_tipo_prod"));
-                catalogo.setTxtDetalle(jsonObject.optString("d_detalles"));
-                // System.out.println(catalogo.getTipoProd());
-                catalogo.setRutaImg((jsonObject.optString("d_imagen")));
-                //System.out.println ("image"+catalogo.getRutaimg());
-                catalogoList.add(catalogo);
-
-            }
-            progreso.hide();
-            CatalogoAdapter adapter=new CatalogoAdapter(catalogoList, getContext());
-            recyclerCatalogo.setAdapter(adapter);
-
-            adapter.setOnClickListener(new View.OnClickListener() {
+            spTipoProducto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onClick(View view) {
-                    Toast.makeText(getContext(),"selecciono: "+catalogoList.get(recyclerCatalogo.getChildAdapterPosition(view)).
-                            getTxtCodigoProd(),Toast.LENGTH_SHORT).show();
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    txtAgregarTprod = TprodList.get(i).getIdTipoProducto();
+                }
 
-                    //interfaceComunicaFragments.enviarProducto(catalogoList.get(recyclerCatalogo.getChildAdapterPosition(view)));
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
                 }
             });
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-            progreso.hide();
-            Toast.makeText(getContext(),"error de conexion "+response,Toast.LENGTH_SHORT).show();
-            progreso.hide();
+            new GetTproducto().execute();
+
+            /*****Combo Marca******/
+            spMarca = vista.findViewById(R.id.spMarca);
+            MarcaList = new ArrayList<Marca>();
+
+            spMarca.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    txtAgregarMarca = MarcaList.get(i).getId_marca();
+                    ModeloList.clear();
+                    MotorList.clear();
+                    if (!txtAgregarMarca.isEmpty()){
+                    new GetModelo().execute();}
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+            new GetMarca().execute();
+
+            /****COMBO MODELO***/
+            spModelo = vista.findViewById(R.id.spModelo);
+            ModeloList = new ArrayList<Modelo>();
+
+            spModelo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    txtAgregarModelo=ModeloList.get(i).getId_modelo();
+                    MotorList.clear();
+                    if (!txtAgregarModelo.isEmpty()){
+                    new GetMotor().execute();}
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+
+            /****COMBO MOTOR***/
+            spMotor = vista.findViewById(R.id.spMotor);
+            MotorList = new ArrayList<Motor>();
+
+            spMotor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    txtAgregarMotor = MotorList.get(i).getId_motor();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            recyclerCatalogo =  vista.findViewById(R.id.idRecycler);
+            recyclerCatalogo.setLayoutManager(new LinearLayoutManager(this.getContext()));
+            recyclerCatalogo.setHasFixedSize(true);
+
+
+            btnBuscar =  vista.findViewById(R.id.btnBuscar);
+            request= Volley.newRequestQueue(getContext());
+
+
+            btnBuscar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    cargarWebService();
+                }
+            });
+
+            return vista;
         }
 
-    }
+     /**************CONSULTA DE PRODUCTOS****************/
+
+     private void cargarWebService() {
+
+         progreso = new ProgressDialog(getContext());
+         progreso.setMessage("Consultando...");
+         progreso.show();
+
+         buscar=campoBusqueda.getText().toString();
+
+         //String url ="http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlBusqueda.php?&pais="+idPais+"&buscar="+campoBusqueda.getText().toString();
+         String url ="http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlBusqueda.php?opc="+idIdioma+"&pais="+idPais+"&keyword="+buscar+
+                 "&tipoProducto="+ txtAgregarTprod+"&marca="+txtAgregarMarca+"&modelo="+txtAgregarModelo+"&motor="+txtAgregarMotor;
+         System.out.println("urlll "+url);
+         url=url.replace(" ","%20");
+
+         jsonObjectRequest= new JsonObjectRequest(Request.Method.GET,url,null,this,this);
+         request.add(jsonObjectRequest);
+     }
 
 
-    /*********Fin CONSULTA***********/
+
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            progreso.hide();
+            Toast.makeText(getContext(),"error al consultar"+error.toString(),Toast.LENGTH_SHORT).show();
+            Log.i("ERROR",error.toString());
+
+        }
+
+        @Override
+        public void onResponse(JSONObject response) {
+            Catalogo catalogo=null;
+
+            JSONArray json= response.optJSONArray("data");
+            try {
+                for (int i =0;i<json.length();i++) {
+                    catalogo= new Catalogo();
+                    JSONObject jsonObject=null;
+                    jsonObject = json.getJSONObject(i);
+
+                    catalogo.setTxtMarca(jsonObject.optString("d_marca"));
+                    catalogo.setTxtserie(jsonObject.optString("d_serie"));
+                    catalogo.setTxtModelo(jsonObject.optString("d_modelo"));
+                    catalogo.setTxtAnno(jsonObject.optString("d_desde_hasta"));
+                    //System.out.println("xxxxx "+catalogo.getNombreVeh());
+                    catalogo.setTxtCodigoProd(jsonObject.optString("d_codigo"));
+                    // System.out.println(catalogo.getNombreFiltro());
+                    catalogo.setTxtTipoProd(jsonObject.optString("d_tipo_prod"));
+                    catalogo.setTxtDetalle(jsonObject.optString("d_detalles"));
+                    // System.out.println(catalogo.getTipoProd());
+                    catalogo.setRutaImg((jsonObject.optString("d_imagen")));
+                    //System.out.println ("image"+catalogo.getRutaimg());
+                    catalogoList.add(catalogo);
+
+                }
+                progreso.hide();
+                CatalogoAdapter adapter=new CatalogoAdapter(catalogoList, getContext());
+                recyclerCatalogo.setAdapter(adapter);
+
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getContext(),"selecciono: "+catalogoList.get(recyclerCatalogo.getChildAdapterPosition(view)).
+                                getTxtCodigoProd(),Toast.LENGTH_SHORT).show();
+
+                        //interfaceComunicaFragments.enviarProducto(catalogoList.get(recyclerCatalogo.getChildAdapterPosition(view)));
+                    }
+                });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progreso.hide();
+                Toast.makeText(getContext(),"error de conexion "+response,Toast.LENGTH_SHORT).show();
+                progreso.hide();
+            }
+
+        }
+
+
+        /*********Fin CONSULTA***********/
 
 
 
-/*************CARGANDO COMBO TIPO PRODUCTO**************************************************************************************/
-    private void cargarTproducto() {
+    /*************CARGANDO COMBO TIPO PRODUCTO**************************************************************************************/
+        private void cargarTproducto() {
+                List<String> lables = new ArrayList<String>();
+                //txtAgregarTprod.setText("");
+                for (int i = 0; i < TprodList.size(); i++) {
+                    lables.add(TprodList.get(i).getTipoProduto());
+                }
+                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                        android.R.layout.simple_spinner_item, lables);
+                spinnerAdapter
+                        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spTipoProducto.setAdapter(spinnerAdapter);
+            }
+        private class GetTproducto extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+              /*  progreso = new ProgressDialog(getContext());
+                progreso.setMessage("Cargando compbos..");
+                progreso.setCancelable(false);
+                progreso.show();*/
+            }
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                ServiceHandler jsonParser = new ServiceHandler();
+                //String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc="+idIdioma, ServiceHandler.GET);
+                String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc=1", ServiceHandler.GET);
+                Log.e("Response: ", "> " + json);
+                if (json != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(json);
+                        if (jsonObj != null) {
+                            JSONArray frutas = jsonObj.getJSONArray("data");
+
+                            for (int i = 0; i < frutas.length(); i++) {
+                                JSONObject catObj = (JSONObject) frutas.get(i);
+                                //System.out.println(catObj);
+                                TipoProducto cat = new TipoProducto(catObj.getString("id"), catObj.getString("desc"));
+
+                                TprodList.add(cat);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.e("JSON Data", "¿No ha recibido ningún dato desde el servidor!");
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                /*if (progreso.isShowing())
+                    progreso.dismiss();*/
+                cargarTproducto();
+            }
+        }
+    /**************FIN CARGA DE COMBO TIPO PRODUCTO***********************************************************************************/
+
+        /*************CARGANDO COMBO MARCA**************************************************************************************/
+        private void cargarComboMarca() {
             List<String> lables = new ArrayList<String>();
-            //txtAgregarTprod.setText("");
-            for (int i = 0; i < TprodList.size(); i++) {
-                lables.add(TprodList.get(i).getTipoProduto());
+            for (int i = 0; i < MarcaList.size(); i++) {
+                lables.add(MarcaList.get(i).getNombre_marca());
             }
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
                     android.R.layout.simple_spinner_item, lables);
             spinnerAdapter
                     .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spTipoProducto.setAdapter(spinnerAdapter);
+            spMarca.setAdapter(spinnerAdapter);
         }
-    private class GetTproducto extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-          /*  progreso = new ProgressDialog(getContext());
-            progreso.setMessage("Cargando compbos..");
-            progreso.setCancelable(false);
-            progreso.show();*/
-        }
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            ServiceHandler jsonParser = new ServiceHandler();
-            //String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc="+idIdioma, ServiceHandler.GET);
-            String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc=1", ServiceHandler.GET);
-            Log.e("Response: ", "> " + json);
-            if (json != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(json);
-                    if (jsonObj != null) {
-                        JSONArray frutas = jsonObj.getJSONArray("data");
-
-                        for (int i = 0; i < frutas.length(); i++) {
-                            JSONObject catObj = (JSONObject) frutas.get(i);
-                            //System.out.println(catObj);
-                            TipoProducto cat = new TipoProducto(catObj.getString("id"), catObj.getString("desc"));
-
-                            TprodList.add(cat);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e("JSON Data", "¿No ha recibido ningún dato desde el servidor!");
+        private class GetMarca extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+              /*  progreso = new ProgressDialog(getContext());
+                progreso.setMessage("Cargando compbos..");
+                progreso.setCancelable(false);
+                progreso.show();*/
             }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            /*if (progreso.isShowing())
-                progreso.dismiss();*/
-            cargarTproducto();
-        }
-    }
-/**************FIN CARGA DE COMBO TIPO PRODUCTO***********************************************************************************/
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                ServiceHandler jsonParser = new ServiceHandler();
+                //String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc="+idIdioma+"&pais="+idPais+"", ServiceHandler.GET);
+                String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc=1&pais=1", ServiceHandler.GET);
+                Log.e("Response: ", "> " + json);
+                if (json != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(json);
+                        if (jsonObj != null) {
+                            JSONArray frutas = jsonObj.getJSONArray("data");
 
-    /*************CARGANDO COMBO MARCA**************************************************************************************/
-    private void cargarComboMarca() {
-        List<String> lables = new ArrayList<String>();
-        for (int i = 0; i < MarcaList.size(); i++) {
-            lables.add(MarcaList.get(i).getNombre_marca());
-        }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, lables);
-        spinnerAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spMarca.setAdapter(spinnerAdapter);
-    }
-    private class GetMarca extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-          /*  progreso = new ProgressDialog(getContext());
-            progreso.setMessage("Cargando compbos..");
-            progreso.setCancelable(false);
-            progreso.show();*/
-        }
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            ServiceHandler jsonParser = new ServiceHandler();
-            //String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc="+idIdioma+"&pais="+idPais+"", ServiceHandler.GET);
-            String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc=1&pais=1", ServiceHandler.GET);
-            Log.e("Response: ", "> " + json);
-            if (json != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(json);
-                    if (jsonObj != null) {
-                        JSONArray frutas = jsonObj.getJSONArray("data");
-
-                        for (int i = 0; i < frutas.length(); i++) {
-                            JSONObject catObj = (JSONObject) frutas.get(i);
-                            //System.out.println(catObj);
-                            Marca cat = new Marca(catObj.getString("id"), catObj.getString("desc"));
-                            //System.out.println(cat);
-                            MarcaList.add(cat);
+                            for (int i = 0; i < frutas.length(); i++) {
+                                JSONObject catObj = (JSONObject) frutas.get(i);
+                                //System.out.println(catObj);
+                                Marca cat = new Marca(catObj.getString("id"), catObj.getString("desc"));
+                                //System.out.println(cat);
+                                MarcaList.add(cat);
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    Log.e("JSON Data", "¿No ha recibido ningún dato desde el servidor!");
                 }
-            } else {
-                Log.e("JSON Data", "¿No ha recibido ningún dato desde el servidor!");
+                return null;
             }
-            return null;
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                /*if (progreso.isShowing())
+                    progreso.dismiss();*/
+                cargarComboMarca();
+            }
         }
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            /*if (progreso.isShowing())
-                progreso.dismiss();*/
-            cargarComboMarca();
-        }
-    }
-    /**************FIN CARGA DE MARCA***********************************************************************************/
+        /**************FIN CARGA DE MARCA***********************************************************************************/
 
-    /*************CARGANDO COMBO MODELO**************************************************************************************/
-    private void cargarComboModelo() {
-        List<String> lables = new ArrayList<String>();
-        for (int i = 0; i < ModeloList.size(); i++) {
-            lables.add(ModeloList.get(i).getNombre_modelo());
+        /*************CARGANDO COMBO MODELO**************************************************************************************/
+        private void cargarComboModelo() {
+            List<String> lables = new ArrayList<String>();
+            for (int i = 0; i < ModeloList.size(); i++) {
+                lables.add(ModeloList.get(i).getNombre_modelo());
+            }
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                    android.R.layout.simple_spinner_item, lables);
+            spinnerAdapter
+                    .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spModelo.setAdapter(spinnerAdapter);
         }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, lables);
-        spinnerAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spModelo.setAdapter(spinnerAdapter);
-    }
-    private class GetModelo extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-          /*  progreso = new ProgressDialog(getContext());
-            progreso.setMessage("Cargando compbos..");
-            progreso.setCancelable(false);
-            progreso.show();*/
-        }
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            ServiceHandler jsonParser = new ServiceHandler();
-            String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMModelo.php?opc="+idIdioma+"&marca="+txtAgregarMarca+"&serie=%22%22", ServiceHandler.GET);
-            System.out.println("urlllll"+"http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMModelo.php?opc="+idIdioma+"&marca="+txtAgregarMarca+"&serie=%22%22");
-            Log.e("Response: ", "> " + json);
-            if (json != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(json);
-                    if (jsonObj != null) {
-                        JSONArray frutas = jsonObj.getJSONArray("data");
+        private class GetModelo extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+              /*  progreso = new ProgressDialog(getContext());
+                progreso.setMessage("Cargando compbos..");
+                progreso.setCancelable(false);
+                progreso.show();*/
+            }
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                ServiceHandler jsonParser = new ServiceHandler();
+                String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMModelo.php?opc="+idIdioma+"&marca="+txtAgregarMarca+"&serie=%22%22", ServiceHandler.GET);
+                System.out.println("urlllll"+"http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMModelo.php?opc="+idIdioma+"&marca="+txtAgregarMarca+"&serie=%22%22");
+                Log.e("Response: ", "> " + json);
+                if (json != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(json);
+                        if (jsonObj != null) {
+                            JSONArray frutas = jsonObj.getJSONArray("data");
 
-                        for (int i = 0; i < frutas.length(); i++) {
-                            JSONObject catObj = (JSONObject) frutas.get(i);
-                            //System.out.println(catObj);
-                            Modelo cat = new Modelo(catObj.getString("id"), catObj.getString("desc"));
-                            //System.out.println(cat);
-                            ModeloList.add(cat);
+                            for (int i = 0; i < frutas.length(); i++) {
+                                JSONObject catObj = (JSONObject) frutas.get(i);
+                                //System.out.println(catObj);
+                                Modelo cat = new Modelo(catObj.getString("id"), catObj.getString("desc"));
+                                //System.out.println(cat);
+                                ModeloList.add(cat);
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    Log.e("JSON Data", "¿No ha recibido ningún dato desde el servidor!");
                 }
-            } else {
-                Log.e("JSON Data", "¿No ha recibido ningún dato desde el servidor!");
+                return null;
             }
-            return null;
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                /*if (progreso.isShowing())
+                    progreso.dismiss();*/
+                cargarComboModelo();
+            }
         }
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            /*if (progreso.isShowing())
-                progreso.dismiss();*/
-            cargarComboModelo();
-        }
-    }
-    /**************FIN CARGA DE MODELO***********************************************************************************/
+        /**************FIN CARGA DE MODELO***********************************************************************************/
 
-    /*************CARGANDO COMBO MOTOR**************************************************************************************/
-    private void cargarComboMotor() {
-        List<String> lables = new ArrayList<String>();
-        for (int i = 0; i < MotorList.size(); i++) {
-            lables.add(MotorList.get(i).getNombre_motor());
+        /*************CARGANDO COMBO MOTOR**************************************************************************************/
+        private void cargarComboMotor() {
+            List<String> lables = new ArrayList<String>();
+            for (int i = 0; i < MotorList.size(); i++) {
+                lables.add(MotorList.get(i).getNombre_motor());
+            }
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                    android.R.layout.simple_spinner_item, lables);
+            spinnerAdapter
+                    .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spMotor.setAdapter(spinnerAdapter);
         }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, lables);
-        spinnerAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spMotor.setAdapter(spinnerAdapter);
-    }
-    private class GetMotor extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-          /*  progreso = new ProgressDialog(getContext());
-            progreso.setMessage("Cargando compbos..");
-            progreso.setCancelable(false);
-            progreso.show();*/
-        }
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            ServiceHandler jsonParser = new ServiceHandler();
-            String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMotor.php?opc="+idIdioma+"&modelo="+txtAgregarModelo, ServiceHandler.GET);
-            Log.e("Response: ", "> " + json);
-            if (json != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(json);
-                    if (jsonObj != null) {
-                        JSONArray frutas = jsonObj.getJSONArray("data");
+        private class GetMotor extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+              /*  progreso = new ProgressDialog(getContext());
+                progreso.setMessage("Cargando compbos..");
+                progreso.setCancelable(false);
+                progreso.show();*/
+            }
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                ServiceHandler jsonParser = new ServiceHandler();
+                String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMotor.php?opc="+idIdioma+"&modelo="+txtAgregarModelo, ServiceHandler.GET);
+                Log.e("Response: ", "> " + json);
+                if (json != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(json);
+                        if (jsonObj != null) {
+                            JSONArray frutas = jsonObj.getJSONArray("data");
 
-                        for (int i = 0; i < frutas.length(); i++) {
-                            JSONObject catObj = (JSONObject) frutas.get(i);
-                            //System.out.println(catObj);
-                            Motor cat = new Motor(catObj.getString("id"), catObj.getString("desc"));
-                            //System.out.println(cat);
-                            MotorList.add(cat);
+                            for (int i = 0; i < frutas.length(); i++) {
+                                JSONObject catObj = (JSONObject) frutas.get(i);
+                                //System.out.println(catObj);
+                                Motor cat = new Motor(catObj.getString("id"), catObj.getString("desc"));
+                                //System.out.println(cat);
+                                MotorList.add(cat);
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    Log.e("JSON Data", "¿No ha recibido ningún dato desde el servidor!");
                 }
-            } else {
-                Log.e("JSON Data", "¿No ha recibido ningún dato desde el servidor!");
+                return null;
             }
-            return null;
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                /*if (progreso.isShowing())
+                    progreso.dismiss();*/
+                cargarComboMotor();
+            }
         }
+        /**************FIN CARGA DE MOTOR***********************************************************************************/
+
+
+
+        // TODO: Rename method, update argument and hook method into UI event
+        public void onButtonPressed(Uri uri) {
+            if (mListener != null) {
+                mListener.onFragmentInteraction(uri);
+            }
+        }
+
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            /*if (progreso.isShowing())
-                progreso.dismiss();*/
-            cargarComboMotor();
-        }
-    }
-    /**************FIN CARGA DE MOTOR***********************************************************************************/
+        public void onAttach(Context context) {
+            super.onAttach(context);
+            if (context instanceof Activity){
+                this.activity =(Activity) context;
+                interfaceComunicaFragments=(IcomunicaFragments) this.activity;
 
+            }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof Activity){
-            this.activity =(Activity) context;
-            interfaceComunicaFragments=(IcomunicaFragments) this.activity;
-
+            if (context instanceof OnFragmentInteractionListener) {
+                mListener = (OnFragmentInteractionListener) context;
+            } else {
+                throw new RuntimeException(context.toString()
+                        + " must implement OnFragmentInteractionListener");
+            }
         }
 
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            mListener = null;
         }
+
+
+
+        /**
+         * This interface must be implemented by activities that contain this
+         * fragment to allow an interaction in this fragment to be communicated
+         * to the activity and potentially other fragments contained in that
+         * activity.
+         * <p>
+         * See the Android Training lesson <a href=
+         * "http://developer.android.com/training/basics/fragments/communicating.html"
+         * >Communicating with Other Fragments</a> for more information.
+         */
+        public interface OnFragmentInteractionListener {
+            // TODO: Update argument type and name
+            void onFragmentInteraction(Uri uri);
+        }
+
+
     }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-
-}
