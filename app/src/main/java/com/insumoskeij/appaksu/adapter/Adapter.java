@@ -18,13 +18,14 @@ import java.util.List;
 
 
 public class Adapter extends BaseAdapter {
-    private Activity activity;
+    //private Activity activity;
+    Context context;
     private LayoutInflater inflater;
     private List<Catalogo> item;
     RequestQueue request;
 
-    public Adapter(Activity activity, List<Catalogo> item) {
-        this.activity = activity;
+    public Adapter(Context context, List<Catalogo> item) {
+        this.context = context;
         this.item = item;
     }
 
@@ -47,11 +48,10 @@ public class Adapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (inflater == null)
-            inflater = (LayoutInflater) activity
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.list_item, null);
+            convertView = inflater.inflate(R.layout.list_item,parent, false);
 
         TextView txt_marca =  convertView.findViewById(R.id.txtMarca);
         TextView txt_modelo =  convertView.findViewById(R.id.txtModelo);
@@ -65,7 +65,7 @@ public class Adapter extends BaseAdapter {
         txt_anno.setText(item.get(position).getTxtAnno());
         txt_tipoProd.setText(item.get(position).getTxtTipoProd());
         txt_nombreProd.setText(item.get(position).getTxtCodigoProd());
-        Picasso.with(this.activity).load(item.get(position).getRutaImg())
+        Picasso.with(this.context).load(item.get(position).getRutaImg())
                 .error(R.drawable.img_base)
                 .fit()
                 .centerInside()

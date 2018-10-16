@@ -99,16 +99,20 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        Fragment fragment= new FormBusquedaFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_main,fragment).commit();
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        swipe = findViewById(R.id.swipe_refresh);
-        list_view = findViewById(R.id.list_view);
+        /*swipe = findViewById(R.id.swipe_refresh);*/
+        list_view = findViewById(R.id.list_view_2);
 
-        adapter = new Adapter(MainActivity.this, listData);
+       /* adapter = new Adapter(this,listData);
         list_view.setAdapter(adapter);
 
-        swipe.setOnRefreshListener(this);
+       /* swipe.setOnRefreshListener(this);
 
         swipe.post(new Runnable() {
                        @Override
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity
                            callData();
                        }
                    }
-        );
+        );*/
 
     }
 
@@ -174,7 +178,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        callData();
+        //callData();
     }
 
     @Override
@@ -311,11 +315,12 @@ public class MainActivity extends AppCompatActivity
         boolean fragmentSelecionado=false;
 
         if (id == R.id.nav_camera) {
-            Intent i = new Intent(this, ItemListActivity.class);
-            startActivity(i);
+            /*Intent i = new Intent(this, ItemListActivity.class);
+            startActivity(i);*/
 
-            /*miFragment = new FormBusquedaFragment();
-            fragmentSelecionado=true;*/
+            miFragment = new FormBusquedaFragment();
+            fragmentSelecionado=true;
+
         } else if (id == R.id.nav_manage) {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
@@ -338,7 +343,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
         if (fragmentSelecionado==true){
-            getSupportFragmentManager().beginTransaction().replace(R.id.swipe_refresh,miFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,miFragment).commit();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
