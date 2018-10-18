@@ -2,22 +2,17 @@
 <android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipe_refresh_2"
+    android:id="@+id/content_2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.insumoskeij.appaksu.MainActivity"
-    android:layout_marginTop="50dp"
-    tools:showIn="@layout/app_bar_main"
-    android:orientation="vertical"
-    android:background="@drawable/side_nav_bar">
-
+    android:layout_marginTop="60dp">
 
     <ListView
         android:id="@+id/list_view_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null" />
-
 
 
 </android.support.v4.widget.SwipeRefreshLayout>

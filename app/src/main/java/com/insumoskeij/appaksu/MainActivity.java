@@ -13,11 +13,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -58,6 +63,8 @@ public class MainActivity extends AppCompatActivity
     Adapter adapter;
     SwipeRefreshLayout swipe;
     ListView list_view;
+
+    boolean fragmentSelecionado=true;
 
     public static final String url_data = "http://aksuglobal.com/catalogo_aksu/aksuapp/prueba/datos.php";
     public static final String url_cari = "http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlBusqueda.php?opc=1&pais=1";
@@ -106,13 +113,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*swipe = findViewById(R.id.swipe_refresh);*/
+        //swipe = findViewById(R.id.swipe_refresh);
         list_view = findViewById(R.id.list_view_2);
 
-       /* adapter = new Adapter(this,listData);
+        adapter = new Adapter(this,listData);
         list_view.setAdapter(adapter);
 
-       /* swipe.setOnRefreshListener(this);
+        /*swipe.setOnRefreshListener(this);
 
         swipe.post(new Runnable() {
                        @Override
@@ -184,11 +191,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
         cariData(query);
-        return false;
+        return true;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
+    public boolean onQueryTextChange(String query) {
         return false;
     }
 
@@ -205,6 +212,10 @@ public class MainActivity extends AppCompatActivity
     }
 
    private void cariData(final String keyword) {
+       if (fragmentSelecionado==true) {
+           getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main)).commit();
+       }
+
         pDialog = new ProgressDialog(MainActivity.this);
         pDialog.setCancelable(false);
         pDialog.setMessage("Loading...");
@@ -312,12 +323,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         Fragment miFragment=null;
-        boolean fragmentSelecionado=false;
+
 
         if (id == R.id.nav_camera) {
             /*Intent i = new Intent(this, ItemListActivity.class);
             startActivity(i);*/
 
+            listData.clear();
+            adapter.notifyDataSetChanged();
             miFragment = new FormBusquedaFragment();
             fragmentSelecionado=true;
 
