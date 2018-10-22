@@ -17,19 +17,19 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.insumoskeij.appaksu.R;
-import com.insumoskeij.appaksu.model.Catalogo;
+import com.insumoskeij.appaksu.model.Producto;
 
 import java.util.List;
 
 public class CatalogoAdapter extends RecyclerView.Adapter<CatalogoAdapter.CatalogoHolder> implements View.OnClickListener {
 
-    List<Catalogo> catalogoList;
+    List<Producto> productoList;
     private View.OnClickListener listener;
     RequestQueue request;
     Context context;
 
-    public CatalogoAdapter(List<Catalogo> catalogoList, Context context){
-        this.catalogoList = catalogoList;
+    public CatalogoAdapter(List<Producto> productoList, Context context){
+        this.productoList = productoList;
         this.context=context;
         request= Volley.newRequestQueue(context);
     }
@@ -51,13 +51,13 @@ public class CatalogoAdapter extends RecyclerView.Adapter<CatalogoAdapter.Catalo
 
     @Override
     public void onBindViewHolder(CatalogoHolder holder, int position) {
-        holder.txtMarca.setText(catalogoList.get(position).getTxtMarca().toString());
-        holder.txtModelo.setText(catalogoList.get(position).getTxtModelo().toString());
-        holder.txtAnno.setText(catalogoList.get(position).getTxtAnno().toString());
-        holder.txtFiltro.setText(catalogoList.get(position).getTxtCodigoProd().toString());
-        holder.txtTipoProd.setText(catalogoList.get(position).getTxtTipoProd().toString());
-        if (catalogoList.get(position).getRutaImg()!=null){
-            cargarImagenWebService(catalogoList.get(position).getRutaImg(),holder);
+        holder.txtMarca.setText(productoList.get(position).getTxtMarca().toString());
+        holder.txtModelo.setText(productoList.get(position).getTxtModelo().toString());
+        holder.txtAnno.setText(productoList.get(position).getTxtAnno().toString());
+        holder.txtFiltro.setText(productoList.get(position).getTxtCodigoProd().toString());
+        holder.txtTipoProd.setText(productoList.get(position).getTxtTipoProd().toString());
+        if (productoList.get(position).getRutaImg()!=null){
+            cargarImagenWebService(productoList.get(position).getRutaImg(),holder);
         }else {
             holder.imgProd.setImageResource(R.drawable.img_base);
         }
@@ -86,7 +86,7 @@ public class CatalogoAdapter extends RecyclerView.Adapter<CatalogoAdapter.Catalo
 
     @Override
     public int getItemCount() {
-        return catalogoList.size();
+        return productoList.size();
     }
 
     @Override

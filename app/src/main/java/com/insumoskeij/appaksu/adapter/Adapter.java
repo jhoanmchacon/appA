@@ -1,30 +1,33 @@
 package com.insumoskeij.appaksu.adapter;
 
-import android.app.Activity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.insumoskeij.appaksu.DetailActivity;
 import com.insumoskeij.appaksu.R;
-import com.insumoskeij.appaksu.model.Catalogo;
+import com.insumoskeij.appaksu.model.Producto;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 
-public class Adapter extends BaseAdapter {
+public class Adapter extends BaseAdapter  {
     //private Activity activity;
     Context context;
     private LayoutInflater inflater;
-    private List<Catalogo> item;
+    private List<Producto> item;
     RequestQueue request;
 
-    public Adapter(Context context, List<Catalogo> item) {
+    public Adapter(Context context, List<Producto> item) {
         this.context = context;
         this.item = item;
     }
@@ -47,14 +50,17 @@ public class Adapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+
+
         if (inflater == null)
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null)
             convertView = inflater.inflate(R.layout.list_item,parent, false);
 
+
         TextView txt_marca =  convertView.findViewById(R.id.txtMarca);
-        TextView txt_modelo =  convertView.findViewById(R.id.txtModelo);
+        final TextView txt_modelo =  convertView.findViewById(R.id.txtModelo);
         TextView txt_anno =  convertView.findViewById(R.id.txtAnno);
         TextView txt_tipoProd =  convertView.findViewById(R.id.txtTipoProd);
         TextView txt_nombreProd =  convertView.findViewById(R.id.txtNombreProd);
@@ -71,8 +77,27 @@ public class Adapter extends BaseAdapter {
                 .centerInside()
                 .into(imgProd);
 
+        final Producto producto = (Producto) this.getItem(position);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDetailActivity();
+
+            }
+        });
+
+
         return convertView;
     }
 
+    private  void openDetailActivity (){
 
+
+
+        Toast.makeText(context,"sssssssssss",Toast.LENGTH_SHORT).show();
+
+       /* Intent intent = new Intent(context, DetailActivity.class);
+        intent.putExtra("MOTOR",)*/
+    }
 }

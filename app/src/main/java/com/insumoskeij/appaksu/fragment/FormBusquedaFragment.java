@@ -32,7 +32,7 @@ import com.insumoskeij.appaksu.R;
 import com.insumoskeij.appaksu.ServiceHandler;
 import com.insumoskeij.appaksu.adapter.CatalogoAdapter;
 import com.insumoskeij.appaksu.interfaces.IcomunicaFragments;
-import com.insumoskeij.appaksu.model.Catalogo;
+import com.insumoskeij.appaksu.model.Producto;
 import com.insumoskeij.appaksu.model.Marca;
 import com.insumoskeij.appaksu.model.Modelo;
 import com.insumoskeij.appaksu.model.Motor;
@@ -67,7 +67,7 @@ public class FormBusquedaFragment extends Fragment implements Response.Listener<
     private OnFragmentInteractionListener mListener;
 
         RecyclerView recyclerCatalogo;
-        ArrayList<Catalogo> catalogoList;
+        ArrayList<Producto> productoList;
         EditText campoBusqueda;
         Button btnBuscar;
         private String buscar;
@@ -139,7 +139,7 @@ public class FormBusquedaFragment extends Fragment implements Response.Listener<
             // Inflate the layout for this fragment
             View vista = inflater.inflate(fragment_form_busqueda, container, false);
 
-            catalogoList=new ArrayList<>();
+            productoList=new ArrayList<>();
             /*****Cargar valor pais/idioma******/
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -275,38 +275,38 @@ public class FormBusquedaFragment extends Fragment implements Response.Listener<
 
         @Override
         public void onResponse(JSONObject response) {
-            Catalogo catalogo=null;
+            Producto producto=null;
 
             JSONArray json= response.optJSONArray("data");
             try {
                 for (int i =0;i<json.length();i++) {
-                    catalogo= new Catalogo();
+                    producto= new Producto();
                     JSONObject jsonObject=null;
                     jsonObject = json.getJSONObject(i);
 
-                    catalogo.setTxtMarca(jsonObject.optString("d_marca"));
-                    catalogo.setTxtserie(jsonObject.optString("d_serie"));
-                    catalogo.setTxtModelo(jsonObject.optString("d_modelo"));
-                    catalogo.setTxtAnno(jsonObject.optString("d_desde_hasta"));
-                    //System.out.println("xxxxx "+catalogo.getNombreVeh());
-                    catalogo.setTxtCodigoProd(jsonObject.optString("d_codigo"));
-                    // System.out.println(catalogo.getNombreFiltro());
-                    catalogo.setTxtTipoProd(jsonObject.optString("d_tipo_prod"));
-                    catalogo.setTxtDetalle(jsonObject.optString("d_detalles"));
-                    // System.out.println(catalogo.getTipoProd());
-                    catalogo.setRutaImg((jsonObject.optString("d_imagen")));
-                    //System.out.println ("image"+catalogo.getRutaimg());
-                    catalogoList.add(catalogo);
+                    producto.setTxtMarca(jsonObject.optString("d_marca"));
+                    producto.setTxtserie(jsonObject.optString("d_serie"));
+                    producto.setTxtModelo(jsonObject.optString("d_modelo"));
+                    producto.setTxtAnno(jsonObject.optString("d_desde_hasta"));
+                    //System.out.println("xxxxx "+producto.getNombreVeh());
+                    producto.setTxtCodigoProd(jsonObject.optString("d_codigo"));
+                    // System.out.println(producto.getNombreFiltro());
+                    producto.setTxtTipoProd(jsonObject.optString("d_tipo_prod"));
+                    producto.setTxtDetalle(jsonObject.optString("d_detalles"));
+                    // System.out.println(producto.getTipoProd());
+                    producto.setRutaImg((jsonObject.optString("d_imagen")));
+                    //System.out.println ("image"+producto.getRutaimg());
+                    productoList.add(producto);
 
                 }
                 progreso.hide();
-                CatalogoAdapter adapter=new CatalogoAdapter(catalogoList, getContext());
+                CatalogoAdapter adapter=new CatalogoAdapter(productoList, getContext());
                 recyclerCatalogo.setAdapter(adapter);
 
                 adapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(),"selecciono: "+catalogoList.get(recyclerCatalogo.getChildAdapterPosition(view)).
+                        Toast.makeText(getContext(),"selecciono: "+productoList.get(recyclerCatalogo.getChildAdapterPosition(view)).
                                 getTxtCodigoProd(),Toast.LENGTH_SHORT).show();
 
                         //interfaceComunicaFragments.enviarProducto(catalogoList.get(recyclerCatalogo.getChildAdapterPosition(view)));
@@ -353,7 +353,7 @@ public class FormBusquedaFragment extends Fragment implements Response.Listener<
             protected Void doInBackground(Void... arg0) {
                 ServiceHandler jsonParser = new ServiceHandler();
                 //String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc="+idIdioma, ServiceHandler.GET);
-                String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc=1", ServiceHandler.GET);
+                String json = jsonParser.makeServiceCall("http://aaksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc=1", ServiceHandler.GET);
                 Log.e("Response: ", "> " + json);
                 if (json != null) {
                     try {
@@ -412,7 +412,7 @@ public class FormBusquedaFragment extends Fragment implements Response.Listener<
             protected Void doInBackground(Void... arg0) {
                 ServiceHandler jsonParser = new ServiceHandler();
                 //String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc="+idIdioma+"&pais="+idPais+"", ServiceHandler.GET);
-                String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc=1&pais=1", ServiceHandler.GET);
+                String json = jsonParser.makeServiceCall("http://aaksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc=1&pais=1", ServiceHandler.GET);
                 Log.e("Response: ", "> " + json);
                 if (json != null) {
                     try {

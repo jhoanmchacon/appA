@@ -13,16 +13,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,7 +31,7 @@ import com.insumoskeij.appaksu.adapter.Adapter;
 import com.insumoskeij.appaksu.app.AppController;
 import com.insumoskeij.appaksu.fragment.FormBusquedaFragment;
 import com.insumoskeij.appaksu.interfaces.IcomunicaFragments;
-import com.insumoskeij.appaksu.model.Catalogo;
+import com.insumoskeij.appaksu.model.Producto;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         FormBusquedaFragment.OnFragmentInteractionListener{
 
     ProgressDialog pDialog;
-    List<Catalogo> listData = new ArrayList<Catalogo>();
+    List<Producto> listData = new ArrayList<Producto>();
     Adapter adapter;
     SwipeRefreshLayout swipe;
     ListView list_view;
@@ -73,10 +68,13 @@ public class MainActivity extends AppCompatActivity
 
     public static final String TAG_MARCA = "d_marca";
     public static final String TAG_MODELO = "d_modelo";
+    public static final String TAG_MOTOR = "d_motor";
+    public static final String TAG_KW = "d_kw_poten";
     public static final String TAG_ANNO = "d_desde_hasta";
     public static final String TAG_CODIGO = "d_codigo";
     public static final String TAG_TIPO_PROD = "d_tipo_prod";
     public static final String TAG_RUTA_IMG = "d_imagen";
+    public static final String TAG_DETALLES = "d_detalles";
     public static final String TAG_RESULTS = "data";
     public static final String TAG_MESSAGE = "d_tipo_prod";
     public static final String TAG_VALUE = "value";
@@ -149,14 +147,17 @@ public class MainActivity extends AppCompatActivity
                     try {
                         JSONObject obj = response.getJSONObject(i);
 
-                        Catalogo item = new Catalogo();
+                        Producto item = new Producto();
 
                         item.setTxtMarca(obj.getString(TAG_MARCA));
                         item.setTxtModelo(obj.getString(TAG_MODELO));
+                        item.setTxtMotor(obj.getString(TAG_MOTOR));
+                        item.setTxtKwPotencia(obj.getString(TAG_KW));
                         item.setTxtAnno(obj.getString(TAG_ANNO));
                         item.setTxtTipoProd(obj.getString(TAG_TIPO_PROD));
                         item.setTxtCodigoProd(obj.getString(TAG_CODIGO));
                         item.setRutaImg(obj.getString(TAG_RUTA_IMG));
+                        item.setTxtDetalle(obj.getString(TAG_DETALLES));
 
                         listData.add(item);
                     } catch (JSONException e) {
@@ -241,14 +242,17 @@ public class MainActivity extends AppCompatActivity
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject obj = jsonArray.getJSONObject(i);
-                            Catalogo data = new Catalogo();
+                            Producto data = new Producto();
 
                             data.setTxtMarca(obj.getString(TAG_MARCA));
                             data.setTxtModelo(obj.getString(TAG_MODELO));
+                            data.setTxtMotor(obj.getString(TAG_MOTOR));
+                            data.setTxtKwPotencia(obj.getString(TAG_KW));
                             data.setTxtAnno(obj.getString(TAG_ANNO));
                             data.setTxtTipoProd(obj.getString(TAG_TIPO_PROD));
                             data.setTxtCodigoProd(obj.getString(TAG_CODIGO));
                             data.setRutaImg(obj.getString(TAG_RUTA_IMG));
+                            data.setTxtDetalle(obj.getString(TAG_DETALLES));
 
                             listData.add(data);
                         }
@@ -365,7 +369,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void enviarProducto(Catalogo catalogo) {
+    public void enviarProducto(Producto producto) {
 
     }
 
