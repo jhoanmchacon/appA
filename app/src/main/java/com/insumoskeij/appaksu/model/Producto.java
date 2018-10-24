@@ -20,8 +20,9 @@ public class Producto {
     private String txtTipoProd;
     private Bitmap imgProd;
     private String rutaImg;
+    private String rutaImg_2;
 
-    public Producto(String txtMarca, String txtModelo, String txtMotor, String txtserie, String txtKwPotencia, String txtDetalle, String txtAnno, String txtCodigoProd, String txtTipoProd, Bitmap imgProd, String rutaImg) {
+    public Producto(String txtMarca, String txtModelo, String txtMotor, String txtserie, String txtKwPotencia, String txtDetalle, String txtAnno, String txtCodigoProd, String txtTipoProd, Bitmap imgProd, String rutaImg, String rutaImg_2) {
         this.txtMarca = txtMarca;
         this.txtModelo = txtModelo;
         this.txtMotor = txtMotor;
@@ -33,6 +34,7 @@ public class Producto {
         this.txtTipoProd = txtTipoProd;
         this.imgProd = imgProd;
         this.rutaImg = rutaImg;
+        this.rutaImg_2 = rutaImg_2;
     }
 
     public Producto () {
@@ -125,6 +127,14 @@ public class Producto {
 
     public void setRutaImg(String rutaImg) {
         this.rutaImg = rutaImg;
+    }
+
+    public String getRutaImg_2() {
+        return rutaImg_2;
+    }
+
+    public void setRutaImg_2(String rutaImg_2) {
+        this.rutaImg_2 = rutaImg_2;
     }
 }
 

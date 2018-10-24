@@ -353,7 +353,7 @@ public class FormBusquedaFragment extends Fragment implements Response.Listener<
             protected Void doInBackground(Void... arg0) {
                 ServiceHandler jsonParser = new ServiceHandler();
                 //String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc="+idIdioma, ServiceHandler.GET);
-                String json = jsonParser.makeServiceCall("http://aaksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc=1", ServiceHandler.GET);
+                String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMTipoProducto.php?opc=1", ServiceHandler.GET);
                 Log.e("Response: ", "> " + json);
                 if (json != null) {
                     try {
@@ -412,7 +412,7 @@ public class FormBusquedaFragment extends Fragment implements Response.Listener<
             protected Void doInBackground(Void... arg0) {
                 ServiceHandler jsonParser = new ServiceHandler();
                 //String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc="+idIdioma+"&pais="+idPais+"", ServiceHandler.GET);
-                String json = jsonParser.makeServiceCall("http://aaksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc=1&pais=1", ServiceHandler.GET);
+                String json = jsonParser.makeServiceCall("http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlMMarca.php?opc=1&pais=1", ServiceHandler.GET);
                 Log.e("Response: ", "> " + json);
                 if (json != null) {
                     try {

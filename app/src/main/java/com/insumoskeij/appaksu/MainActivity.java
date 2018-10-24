@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
     SwipeRefreshLayout swipe;
     ListView list_view;
 
-    boolean fragmentSelecionado=true;
+    boolean fragmentSelecionado=false;
 
     public static final String url_data = "http://aksuglobal.com/catalogo_aksu/aksuapp/prueba/datos.php";
     public static final String url_cari = "http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlBusqueda.php?opc=1&pais=1";
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     public static final String TAG_CODIGO = "d_codigo";
     public static final String TAG_TIPO_PROD = "d_tipo_prod";
     public static final String TAG_RUTA_IMG = "d_imagen";
+    public static final String TAG_RUTA_IMG_2 = "d_imagen_2";
     public static final String TAG_DETALLES = "d_detalles";
     public static final String TAG_RESULTS = "data";
     public static final String TAG_MESSAGE = "d_tipo_prod";
@@ -104,8 +105,8 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        Fragment fragment= new FormBusquedaFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.content_main,fragment).commit();
+       /* Fragment fragment= new FormBusquedaFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_main,fragment).commit();*/
 
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -252,6 +253,7 @@ public class MainActivity extends AppCompatActivity
                             data.setTxtTipoProd(obj.getString(TAG_TIPO_PROD));
                             data.setTxtCodigoProd(obj.getString(TAG_CODIGO));
                             data.setRutaImg(obj.getString(TAG_RUTA_IMG));
+                            data.setRutaImg_2(obj.getString(TAG_RUTA_IMG_2));
                             data.setTxtDetalle(obj.getString(TAG_DETALLES));
 
                             listData.add(data);

@@ -48,7 +48,7 @@ public class Adapter extends BaseAdapter  {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
 
 
@@ -77,12 +77,11 @@ public class Adapter extends BaseAdapter  {
                 .centerInside()
                 .into(imgProd);
 
-        final Producto producto = (Producto) this.getItem(position);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDetailActivity();
+                openDetailActivity(position);
 
             }
         });
@@ -91,13 +90,24 @@ public class Adapter extends BaseAdapter  {
         return convertView;
     }
 
-    private  void openDetailActivity (){
+    private  void openDetailActivity (int position){
 
 
 
-        Toast.makeText(context,"sssssssssss",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context,"sssssssssss",Toast.LENGTH_SHORT).show();
 
-       /* Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra("MOTOR",)*/
+        Intent intent = new Intent(context, DetailActivity.class);
+        intent.putExtra("MOTOR",(item.get(position).getTxtMotor()));
+        //intent.putExtra("Kw",(item.get(position).getTxtKwPotencia()));
+        intent.putExtra("DETALLE",(item.get(position).getTxtDetalle()));
+        intent.putExtra("RutaImgProd",(item.get(position).getRutaImg_2()));
+        intent.putExtra("MARCA",item.get(position).getTxtMarca());
+        intent.putExtra("MODELO",item.get(position).getTxtModelo());
+        intent.putExtra("ANNO",item.get(position).getTxtAnno());
+        intent.putExtra("TPROD",item.get(position).getTxtTipoProd());
+        intent.putExtra("CPROD",item.get(position).getTxtCodigoProd());
+
+
+        context.startActivity(intent);
     }
 }
