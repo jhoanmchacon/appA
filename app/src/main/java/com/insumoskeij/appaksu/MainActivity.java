@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity
     public static final String TAG_RUTA_IMG = "d_imagen";
     public static final String TAG_RUTA_IMG_2 = "d_imagen_2";
     public static final String TAG_DETALLES = "d_detalles";
+    public static final String TAG_DETALLESCODBARRA = "d_detallesCodBarra";
+    public static final String TAG_DETALLESMEDIDA = "d_detallesMedida";
+    public static final String TAG_DETALLESPESO = "d_detallesPeso";
     public static final String TAG_RESULTS = "data";
     public static final String TAG_MESSAGE = "d_tipo_prod";
     public static final String TAG_VALUE = "value";
@@ -255,6 +258,9 @@ public class MainActivity extends AppCompatActivity
                             data.setRutaImg(obj.getString(TAG_RUTA_IMG));
                             data.setRutaImg_2(obj.getString(TAG_RUTA_IMG_2));
                             data.setTxtDetalle(obj.getString(TAG_DETALLES));
+                            data.setTxtDetalleCodBarra(obj.getString(TAG_DETALLESCODBARRA));
+                            data.setTxtDetalleMedida(obj.getString(TAG_DETALLESMEDIDA));
+                            data.setTxtDetallePeso(obj.getString(TAG_DETALLESPESO));
 
                             listData.add(data);
                         }

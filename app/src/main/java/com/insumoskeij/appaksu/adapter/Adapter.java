@@ -100,6 +100,9 @@ public class Adapter extends BaseAdapter  {
         intent.putExtra("MOTOR",(item.get(position).getTxtMotor()));
         //intent.putExtra("Kw",(item.get(position).getTxtKwPotencia()));
         intent.putExtra("DETALLE",(item.get(position).getTxtDetalle()));
+        intent.putExtra("DETALLECODBARRA",(item.get(position).getTxtDetalleCodBarra()));
+        intent.putExtra("DETALLEMEDIDA",(item.get(position).getTxtDetalleMedida()));
+        intent.putExtra("DETALLEPESO",(item.get(position).getTxtDetallePeso()));
         intent.putExtra("RutaImgProd",(item.get(position).getRutaImg_2()));
         intent.putExtra("MARCA",item.get(position).getTxtMarca());
         intent.putExtra("MODELO",item.get(position).getTxtModelo());

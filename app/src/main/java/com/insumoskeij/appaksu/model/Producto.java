@@ -15,6 +15,9 @@ public class Producto {
     private String txtserie;
     private String txtKwPotencia;
     private String txtDetalle;
+    private String txtDetalleCodBarra;
+    private String txtDetalleMedida;
+    private String txtDetallePeso;
     private String txtAnno;
     private String txtCodigoProd;
     private String txtTipoProd;
@@ -22,13 +25,16 @@ public class Producto {
     private String rutaImg;
     private String rutaImg_2;
 
-    public Producto(String txtMarca, String txtModelo, String txtMotor, String txtserie, String txtKwPotencia, String txtDetalle, String txtAnno, String txtCodigoProd, String txtTipoProd, Bitmap imgProd, String rutaImg, String rutaImg_2) {
+    public Producto(String txtMarca, String txtModelo, String txtMotor, String txtserie, String txtKwPotencia, String txtDetalle, String txtDetalleCodBarra, String txtDetalleMedida, String txtDetallePeso, String txtAnno, String txtCodigoProd, String txtTipoProd, Bitmap imgProd, String rutaImg, String rutaImg_2) {
         this.txtMarca = txtMarca;
         this.txtModelo = txtModelo;
         this.txtMotor = txtMotor;
         this.txtserie = txtserie;
         this.txtKwPotencia = txtKwPotencia;
         this.txtDetalle = txtDetalle;
+        this.txtDetalleCodBarra = txtDetalleCodBarra;
+        this.txtDetalleMedida = txtDetalleMedida;
+        this.txtDetallePeso = txtDetallePeso;
         this.txtAnno = txtAnno;
         this.txtCodigoProd = txtCodigoProd;
         this.txtTipoProd = txtTipoProd;
@@ -54,6 +60,30 @@ public class Producto {
 
     public void setTxtDetalle(String txtDetalle) {
         this.txtDetalle = txtDetalle;
+    }
+
+    public String getTxtDetalleCodBarra() {
+        return txtDetalleCodBarra;
+    }
+
+    public void setTxtDetalleCodBarra(String txtDetalleCodBarra) {
+        this.txtDetalleCodBarra = txtDetalleCodBarra;
+    }
+
+    public String getTxtDetalleMedida() {
+        return txtDetalleMedida;
+    }
+
+    public void setTxtDetalleMedida(String txtDetalleMedida) {
+        this.txtDetalleMedida = txtDetalleMedida;
+    }
+
+    public String getTxtDetallePeso() {
+        return txtDetallePeso;
+    }
+
+    public void setTxtDetallePeso(String txtDetallePeso) {
+        this.txtDetallePeso = txtDetallePeso;
     }
 
     public String getTxtMarca() {

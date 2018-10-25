@@ -17,7 +17,8 @@ import com.android.volley.toolbox.Volley;
 
 public class DetailActivity extends AppCompatActivity {
 
-    TextView TxtMotor,TxtKwPotencia, TxtDetalle,txtMarca,txtModelo,txtAnno,txtTipoProd,txtCodProd;
+    TextView TxtMotor,TxtKwPotencia, TxtDetalle,txtMarca,txtModelo,txtAnno,txtTipoProd,txtCodProd
+            ,TxtDetalleCodBarra,TxtDetalleMedida,TxtDetallePeso;
     ImageView ImgProd;
     RequestQueue request;
 
@@ -35,6 +36,9 @@ public class DetailActivity extends AppCompatActivity {
         TxtMotor = findViewById(R.id.txtMotor);
         //TxtKwPotencia=  findViewById(R.id.txtKwPotencia);
         TxtDetalle = findViewById(R.id.txtDetalles);
+        TxtDetalleCodBarra = findViewById(R.id.txtDetallesCodBarra);
+        TxtDetalleMedida = findViewById(R.id.txtDetallesMedida);
+        TxtDetallePeso = findViewById(R.id.txtDetallesPeso);
 
 
         request = Volley.newRequestQueue(getApplicationContext());
@@ -53,8 +57,11 @@ public class DetailActivity extends AppCompatActivity {
         String motor=i.getExtras().getString("MOTOR");
         //String kw=i.getExtras().getString("Kw");
         String detalle=i.getExtras().getString("DETALLE");
+        String detalleCodBarra=i.getExtras().getString("DETALLECODBARRA");
+        String detalleMedida=i.getExtras().getString("DETALLEMEDIDA");
+        String detallePeso=i.getExtras().getString("DETALLEPESO");
         String rutaImgProd=i.getExtras().getString("RutaImgProd");
-        System.out.println("imagennn" + rutaImgProd);
+        //System.out.println("imagennn" + rutaImgProd);
 
 
 
@@ -62,6 +69,9 @@ public class DetailActivity extends AppCompatActivity {
         TxtMotor.setText(motor);
         //TxtKwPotencia.setText(kw);
         TxtDetalle.setText(detalle);
+        TxtDetalleCodBarra.setText(detalleCodBarra);
+        TxtDetalleMedida.setText(detalleMedida);
+        TxtDetallePeso.setText(detallePeso);
         txtMarca.setText(marca);
         txtModelo.setText(modelo);
         txtAnno.setText(anno);
