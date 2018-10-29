@@ -19,19 +19,30 @@
             android:orientation="vertical">
 
 
-            <LinearLayout
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:textAlignment="center">
-
-
+                android:layout_height="200dp">
                 <ImageView
-                    android:id="@+id/imgProd"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="5dp" />
-            </LinearLayout>
+                    android:layout_height="180dp"
+                    android:id="@+id/imgProd"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:id="@+id/txtNombreProd_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#90000000"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@android:color/white" />
+            </FrameLayout>
 
 
             <LinearLayout
@@ -100,7 +111,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"
                             android:layout_weight="10"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/txtAnno"
@@ -108,7 +120,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"
                             android:layout_weight="10"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"
+                            android:visibility="gone"/>
 
 
                     </LinearLayout>
@@ -126,11 +139,11 @@
                 android:layout_weight=".8"
                 android:text="Detalles"
                 android:textStyle="bold|italic"
-                android:textColor="@color/colorPrimary"
-                android:textSize="21sp" />
+                android:textColor="#bbbcba"
+                android:textSize="26sp" />
 
             <TextView
-                android:id="@+id/tRMarcas"
+                android:id="@+id/tOMarcas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
@@ -138,16 +151,17 @@
                 android:text="REFERENCIAS DE OTRAS MARCAS"
                 android:textStyle="bold|italic"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17sp" />
-
-
+                android:textSize="17sp"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/txtDetalles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_weight=".8"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"/>
+
             <TextView
                 android:id="@+id/tCodBarra"
                 android:layout_width="match_parent"
@@ -157,8 +171,8 @@
                 android:layout_weight=".8"
                 android:textStyle="bold|italic"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17sp" />
-
+                android:textSize="17sp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/txtDetallesCodBarra"
@@ -166,7 +180,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_weight=".8"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tMedida"
@@ -177,8 +192,8 @@
                 android:text="MEDIDAS"
                 android:textStyle="bold|italic"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17sp" />
-
+                android:textSize="17sp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/txtDetallesMedida"
@@ -186,7 +201,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_weight=".8"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tPeso"
@@ -197,7 +213,8 @@
                 android:text="PESO"
                 android:textStyle="bold|italic"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:visibility="gone"/>
 
 
             <TextView
@@ -206,7 +223,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_weight=".8"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </ScrollView>

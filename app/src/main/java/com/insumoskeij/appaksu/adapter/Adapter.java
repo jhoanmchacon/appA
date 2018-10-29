@@ -77,6 +77,9 @@ public class Adapter extends BaseAdapter  {
                 .centerInside()
                 .into(imgProd);
 
+        if (!(item.get(position).getTxtAnno()).equals("0-0")){
+            txt_anno.setVisibility(View.VISIBLE);
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

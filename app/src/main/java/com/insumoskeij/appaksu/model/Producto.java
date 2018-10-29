@@ -166,5 +166,7 @@ public class Producto {
     public void setRutaImg_2(String rutaImg_2) {
         this.rutaImg_2 = rutaImg_2;
     }
+
+
 }
 

@@ -1,13 +1,18 @@
 package com.insumoskeij.appaksu;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -43,15 +49,12 @@ import java.util.List;
 import java.util.Map;
 
 
-
-
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         SwipeRefreshLayout.OnRefreshListener,
         SearchView.OnQueryTextListener,
         IcomunicaFragments,
-        FormBusquedaFragment.OnFragmentInteractionListener{
+        FormBusquedaFragment.OnFragmentInteractionListener {
 
     ProgressDialog pDialog;
     List<Producto> listData = new ArrayList<Producto>();
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     SwipeRefreshLayout swipe;
     ListView list_view;
 
-    boolean fragmentSelecionado=false;
+    boolean fragmentSelecionado = false;
 
     public static final String url_data = "http://aksuglobal.com/catalogo_aksu/aksuapp/prueba/datos.php";
     public static final String url_cari = "http://aksuglobal.com/catalogo_aksu/aksuapp/controlador_app/controlBusqueda.php?opc=1&pais=1";
@@ -118,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         //swipe = findViewById(R.id.swipe_refresh);
         list_view = findViewById(R.id.list_view_2);
 
-        adapter = new Adapter(this,listData);
+        adapter = new Adapter(this, listData);
         list_view.setAdapter(adapter);
 
         /*swipe.setOnRefreshListener(this);
@@ -216,10 +219,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-   private void cariData(final String keyword) {
-       if (fragmentSelecionado==true) {
-           getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main)).commit();
-       }
+    private void cariData(final String keyword) {
+        if (fragmentSelecionado == true) {
+            getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main)).commit();
+        }
 
         pDialog = new ProgressDialog(MainActivity.this);
         pDialog.setCancelable(false);
@@ -312,7 +315,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -334,7 +336,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment miFragment=null;
+        Fragment miFragment = null;
 
 
         if (id == R.id.nav_camera) {
@@ -344,7 +346,7 @@ public class MainActivity extends AppCompatActivity
             listData.clear();
             adapter.notifyDataSetChanged();
             miFragment = new FormBusquedaFragment();
-            fragmentSelecionado=true;
+            fragmentSelecionado = true;
 
         } else if (id == R.id.nav_manage) {
             Intent i = new Intent(this, SettingsActivity.class);
@@ -367,8 +369,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
-        if (fragmentSelecionado==true){
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,miFragment).commit();
+        if (fragmentSelecionado == true) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, miFragment).commit();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -385,4 +387,7 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
+
 }
