@@ -1,6 +1,7 @@
 package com.insumoskeij.appaksu.adapter;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,10 +10,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.insumoskeij.appaksu.DetailActivity;
+import com.insumoskeij.appaksu.DetalleActivity;
 import com.insumoskeij.appaksu.R;
 import com.insumoskeij.appaksu.model.Producto;
 import com.squareup.picasso.Picasso;
@@ -21,14 +21,13 @@ import java.util.List;
 
 
 public class Adapter extends BaseAdapter  {
-    //private Activity activity;
-    Context context;
+    private Activity activity;
+    //Context context;
     private LayoutInflater inflater;
     private List<Producto> item;
-    RequestQueue request;
 
-    public Adapter(Context context, List<Producto> item) {
-        this.context = context;
+    public Adapter(Activity activity, List<Producto> item) {
+        this.activity = activity;
         this.item = item;
     }
 
@@ -53,7 +52,7 @@ public class Adapter extends BaseAdapter  {
 
 
         if (inflater == null)
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null)
             convertView = inflater.inflate(R.layout.list_item,parent, false);
@@ -71,7 +70,7 @@ public class Adapter extends BaseAdapter  {
         txt_anno.setText(item.get(position).getTxtAnno());
         txt_tipoProd.setText(item.get(position).getTxtTipoProd());
         txt_nombreProd.setText(item.get(position).getTxtCodigoProd());
-        Picasso.with(this.context).load(item.get(position).getRutaImg())
+        Picasso.with(this.activity).load(item.get(position).getRutaImg())
                 .error(R.drawable.img_base)
                 .fit()
                 .centerInside()
@@ -99,9 +98,8 @@ public class Adapter extends BaseAdapter  {
 
         //Toast.makeText(context,"sssssssssss",Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(context, DetailActivity.class);
+        Intent intent = new Intent(activity, DetalleActivity.class);
         intent.putExtra("MOTOR",(item.get(position).getTxtMotor()));
-        //intent.putExtra("Kw",(item.get(position).getTxtKwPotencia()));
         intent.putExtra("DETALLE",(item.get(position).getTxtDetalle()));
         intent.putExtra("DETALLECODBARRA",(item.get(position).getTxtDetalleCodBarra()));
         intent.putExtra("DETALLEMEDIDA",(item.get(position).getTxtDetalleMedida()));
@@ -114,6 +112,6 @@ public class Adapter extends BaseAdapter  {
         intent.putExtra("CPROD",item.get(position).getTxtCodigoProd());
 
 
-        context.startActivity(intent);
+        activity.startActivity(intent);
     }
 }

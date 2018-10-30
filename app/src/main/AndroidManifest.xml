@@ -31,8 +31,10 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".DetailActivity" />
-        <activity android:name=".ImagenDetalle"></activity>
+        <activity
+            android:name=".ImagenDetalle"></activity>
+        <activity
+            android:name=".DetalleActivity"></activity>
     </application>
 
 </manifest>

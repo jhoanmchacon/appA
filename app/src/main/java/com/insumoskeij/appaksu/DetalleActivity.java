@@ -3,13 +3,16 @@ package com.insumoskeij.appaksu;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.os.Parcelable;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,7 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetalleActivity extends AppCompatActivity {
 
     TextView txtMotor, txtMarca, txtModelo, txtAnno,
             txtTipoProd, txtCodProd, txtCodProd_2,
@@ -28,13 +31,12 @@ public class DetailActivity extends AppCompatActivity {
     ImageView imgProd;
     RequestQueue request;
     Context context;
-    String rutaImgProd;
+    String rutaImgProd, tprod, cprod;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
-
+        setContentView(R.layout.activity_detalle);
         imgProd = findViewById(R.id.imgProd);
         txtMarca = findViewById(R.id.txtMarca);
         txtModelo = findViewById(R.id.txtModelo);
@@ -64,13 +66,13 @@ public class DetailActivity extends AppCompatActivity {
         String marca = i.getExtras().getString("MARCA");
         String modelo = i.getExtras().getString("MODELO");
         String anno = i.getExtras().getString("ANNO");
-        String tprod = i.getExtras().getString("TPROD");
-        String cprod = i.getExtras().getString("CPROD");
         String motor = i.getExtras().getString("MOTOR");
         String detalle = i.getExtras().getString("DETALLE");
         String detalleCodBarra = i.getExtras().getString("DETALLECODBARRA");
         String detalleMedida = i.getExtras().getString("DETALLEMEDIDA");
         String detallePeso = i.getExtras().getString("DETALLEPESO");
+        tprod = i.getExtras().getString("TPROD");
+        cprod = i.getExtras().getString("CPROD");
         rutaImgProd = i.getExtras().getString("RutaImgProd");
 
         if (!motor.equals("-")) {
@@ -104,7 +106,7 @@ public class DetailActivity extends AppCompatActivity {
 
         //BIND DATA
         txtMotor.setText(motor);
-        txtOMarcas.setText(detalle);
+        txtOMarcas.setText(Html.fromHtml(detalle));
         txtDetalleCodBarra.setText(detalleCodBarra);
         txtDetalleMedida.setText(detalleMedida);
         txtDetallePeso.setText(detallePeso);
@@ -130,28 +132,41 @@ public class DetailActivity extends AppCompatActivity {
         });
         request.add(imageRequest);
 
-    imgProd.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+        imgProd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            openDetailActivity();
+                openDetailActivity(v);
 
 
-        }
-    });
+            }
+        });
 
 
     }
 
-    private void openDetailActivity() {
+    private void openDetailActivity(View view) {
 
         //Toast.makeText(this,"sssssssssss "+ rutaImgProd, Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, ImagenDetalle.class);
-        System.out.println("qqq2 "+rutaImgProd);
+        Intent intent = new Intent(DetalleActivity.this, ImagenDetalle.class);
+        //System.out.println("qqq2 "+rutaImgProd);
+        intent.putExtra("CPROD", cprod);
+        intent.putExtra("TPROD", tprod);
         intent.putExtra("IMG", rutaImgProd);
-        this.startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            ActivityOptionsCompat activityOptions =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            this,
+                            new Pair<View, String>(view.findViewById(R.id.imgProd),
+                                    ImagenDetalle.VIEW_NAME_HEADER_IMAGE)
+                    );
+
+            ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
+        } else
+            startActivity(intent);
+
+
     }
-
-
 }

@@ -3,19 +3,19 @@ package com.insumoskeij.appaksu;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.insumoskeij.appaksu.model.Producto;
 import com.squareup.picasso.Picasso;
 
 public class ImagenDetalle extends AppCompatActivity {
 
 
     private ImageView imagenExtendida;
-    //GET INTENT
+    private TextView tProd, cProd;
 
+    //GET INTENT
+    public static final String VIEW_NAME_HEADER_IMAGE = "imagen_compartida";
 
 
 
@@ -31,9 +31,18 @@ public class ImagenDetalle extends AppCompatActivity {
 
 
         String rutaImgProd = i.getExtras().getString("IMG");
-        imagenExtendida =  findViewById(R.id.imagen_extendida);
+        String tprod = i.getExtras().getString("TPROD");
+        String cprod = i.getExtras().getString("CPROD");
 
-         System.out.println("qqq "+rutaImgProd);
+
+        imagenExtendida =  findViewById(R.id.imagen_extendida);
+        //tProd = findViewById(R.id.tProd);
+       // cProd = findViewById(R.id.cProd);
+
+        //tProd.setText(tprod);
+        //cProd.setText(cprod);
+
+      //   System.out.println("qqq "+rutaImgProd);
         Picasso.with(this).load(rutaImgProd)
                 .error(R.drawable.img_base)
                 .fit()
@@ -41,12 +50,5 @@ public class ImagenDetalle extends AppCompatActivity {
                 .into(imagenExtendida);
     }
 
-    private void cargarImagenExtendida() {
 
-    }
-
-    private void usarToolbar() {
-        Toolbar toolbar =  findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
 }
